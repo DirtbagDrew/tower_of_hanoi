@@ -24,11 +24,21 @@
 #     int n = 4; // Number of disks
 #     towerOfHanoi(n, 'A', 'C', 'B');  // A, B and C are names of rods
 #     return 0;
-# }x
+# }
 
 # n = $s0
+# $s1 = from_rod
+# $s2 = to_rod
+# $s3 = aux_rod
 .data
 
-
 .text
+li $s1, 'A'	# from_rod = 'A' 
+li $s2, 'B'	# to_rod = 'B'
+li $s3, 'C'	# aux_rod = 'C'
+
+main:
 addi $s0,$s0,4	# int n = 4; // Number of disks
+
+towerOfHanoi:
+jr    $ra  

@@ -24,7 +24,7 @@
 #     int n = 4; // Number of disks
 #     towerOfHanoi(n, 'A', 'C', 'B');  // A, B and C are names of rods
 #     return 0;
-# }
+# }x
 
 # n = $s0
 .data

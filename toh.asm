@@ -5,7 +5,7 @@
 # Jacob Parcell
 # 11/30/17
 #
-# convert the following c code to mips
+# convert the following c code to mips *update* pretty different than C code
 # C Code
 # void towerOfHanoi(int n, char from_rod, char to_rod, char aux_rod)
 # {
@@ -40,19 +40,28 @@ li $s2, 'C'		# aux_rod = 'C'
 
 main:
 li  $v0, 4
-la $a0, askForDiskCount	#prompts user to enter disk count they want
+la $a0, askForDiskCount	# prompts user to enter disk count they want
 syscall
 
 li $v0, 5		# gets disk count from user 
 syscall
-add $t0, $v0, $zero 	#load user identified disk count into n 
+add $t0, $v0, $zero 	# load user identified disk count into n 
+
+add $a0,$0,$t0		# load n into $a0
+addi $a1,$0,1		# numbers for each tower number
+addi $a2,$0,2
+addi $a2,$0,3
+
+addi $t3, $zero, 1	
+addi $t4, $zero, 2	
+addi $t5, $zero, 3	
+jal towerOfHanoi
 
 j End
 
 towerOfHanoi:
-addi $t0,$t0,1		# $t0 = 1
-slti $t1, $s0,1		# if n < 1, $t1 = 1; else $t1 = 0
-beq $t1, 1, End		# if $t1 < 1  =>  end
+slti $t1, $a0, 1
+beq $t1, $t3, End	# if n < 1 end the program
 
 
 

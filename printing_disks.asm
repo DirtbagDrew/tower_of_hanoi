@@ -14,7 +14,7 @@ la $s5, tower1		# allocate array tower1 to $s5
 la $s6, tower2		# allocate array tower2 to $s6
 la $s7, tower3		# allocate array tower3 to $s7
 
-li $t0, 25 # t0 is a constant n
+li $t0, 25 # t0 is a constant n.
 li $t1, 0 # t1 is our counter (i)
 add $t7, $t1,1
 

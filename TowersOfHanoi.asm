@@ -95,8 +95,6 @@ addi $t0, $a2, 0	# create temp for to_rod
 addi $a2, $a3, 0	# set to_rod to value of aux_rod
 addi $a3, $t0, 0	# set aux_rod to value of to_rod
 
-#print move
-
 jal towerOfHanoi
 
 lw $a0, 0($sp)

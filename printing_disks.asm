@@ -83,6 +83,7 @@ j xloop # jump back to the top
 
 # prints the blank space for tower 1
 tower_1_blank_spaces:
+#li $t1, 0
 beq $s0, $0,isZero1
 sub $a1,$t0,$s0
 j is_zero_1_done
@@ -94,29 +95,29 @@ li $a2, 0 # t1 is our counter (i)
 
 # loop inside of tower_1_num_0_blank_spaces
 tower_1_blank_spaces_loop:
-beq $a1, $a2, tower_2_decide # if t1 == 10 we are done
+beq $a2, $a1, tower_2_decide # if t1 == 10 we are done
 
 li $v0, 4 
 la $a0, blank_space
 syscall
 
-addi $t1, $t1, 1 # add 1 to t1
+addi $a2, $a2, 1 # add 1 to t1
 j tower_1_blank_spaces_loop # jump back to the top
 #--------------------------------------------------
 #--------------------------------------------------
 
 
 
-
 #----------------------------------------------
 #----------------------------------------------
-# prints tower 1
+# prints tower 2
 #----------------------------------------------
+#prints the "|" if the number is 0 for tower 2
 #decides whether 0 or not
 tower_2_decide:
 beq $s1, 0, tower_2_num0
 j tower_2_numgreater0
-#prints the "|" if the number is 0 for tower 1
+
 tower_2_num0:
 li $v0, 4 
 la $a0, blank
@@ -139,6 +140,7 @@ j xxloop # jump back to the top
 
 # prints the blank space for tower 1
 tower_2_blank_spaces:
+#li $t1, 0
 beq $s1, $0,isZero2
 sub $a1,$t0,$s1
 j is_zero_2_done
@@ -150,20 +152,25 @@ li $a2, 0 # t1 is our counter (i)
 
 # loop inside of tower_1_num_0_blank_spaces
 tower_2_blank_spaces_loop:
-beq $a1, $a2, endlinea # if t1 == 10 we are done
+beq $a2, $a1, endlinea # if t1 == 10 we are done
 
 li $v0, 4 
 la $a0, blank_space
 syscall
 
-addi $t1, $t1, 1 # add 1 to t1
+addi $a2, $a2, 1 # add 1 to t1
 j tower_2_blank_spaces_loop # jump back to the top
 #--------------------------------------------------
-#--------------------------------------------------
+#---------------------------------------------------
+
+
+
+
 endlinea:
 li $v0, 4 
 la $a0, newLine
 syscall
+j increment
 
 
 increment:

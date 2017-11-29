@@ -26,19 +26,34 @@
 #     return 0;
 # }
 
-# n = $s0
-# $s1 = from_rod
-# $s2 = to_rod
-# $s3 = aux_rod
+# n = $t0
+# $s0 = from_rod
+# $s1 = to_rod
+# $s2 = aux_rod
 .data
-
+askForDiskCount:
+	.asciiz "\nEnter the number of disks: "
 .text
-li $s1, 'A'	# from_rod = 'A' 
-li $s2, 'B'	# to_rod = 'B'
-li $s3, 'C'	# aux_rod = 'C'
+li $s0, 'A'		# from_rod = 'A' 
+li $s1, 'B'		# to_rod = 'B'
+li $s2, 'C'		# aux_rod = 'C'
 
 main:
-addi $s0,$s0,4	# int n = 4; // Number of disks
+li  $v0, 4
+la $a0, askForDiskCount	#prompts user to enter disk count they want
+syscall
+
+li $v0, 5		# gets disk count from user 
+syscall
+add $t0, $v0, $zero 	#load user identified disk count into n 
+
+j End
 
 towerOfHanoi:
-jr    $ra  
+addi $t0,$t0,1		# $t0 = 1
+slti $t1, $s0,1		# if n < 1, $t1 = 1; else $t1 = 0
+beq $t1, 1, End		# if $t1 < 1  =>  end
+
+
+
+End:

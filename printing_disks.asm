@@ -17,7 +17,7 @@ la $s7, tower3		# allocate array tower3 to $s7
 
 li $t0, 25 # t0 is a constant n.
 li $t1, 0 # t1 is our counter (i)
-add $t7, $t1,1
+addi $t7, $t1,1
 
 loop:
 beq $t1, $t0, refresh_counter # if t1 == 10 we are done
@@ -25,11 +25,11 @@ sll $t2, $t1, 2		# multiply t1 by 4
 
 add $t3,$t2,$s5		# $t3 = $tower1[i]
 add $t4,$t2,$s6		# $t4 = $tower1[i]
-add $t5,$t2,$s6		# $t5 = $tower1[i]
+add $t5,$t2,$s7		# $t5 = $tower1[i]
 
 sw $t7, 0($t3)		# tower1[i] = i
-sw $0, 0($t4)		# tower2[i] = 0
-sw $0, 0($t5)		# tower3[i] = 0
+sw $t7, 0($t4)		# tower2[i] = 0
+sw $t7, 0($t5)		# tower3[i] = 0
 
 addi $t1, $t1, 1 # add 1 to t1
 add $t7, $t7,1
@@ -115,7 +115,7 @@ j tower_1_blank_spaces_loop # jump back to the top
 #prints the "|" if the number is 0 for tower 2
 #decides whether 0 or not
 tower_2_decide:
-beq $s1, 0, tower_2_num0
+beq $s1, $0, tower_2_num0
 j tower_2_numgreater0
 
 tower_2_num0:
@@ -152,7 +152,7 @@ li $a2, 0 # t1 is our counter (i)
 
 # loop inside of tower_1_num_0_blank_spaces
 tower_2_blank_spaces_loop:
-beq $a2, $a1, endlinea # if t1 == 10 we are done
+beq $a2, $a1, tower_3_decide # if t1 == 10 we are done
 
 li $v0, 4 
 la $a0, blank_space
@@ -162,9 +162,58 @@ addi $a2, $a2, 1 # add 1 to t1
 j tower_2_blank_spaces_loop # jump back to the top
 #--------------------------------------------------
 #---------------------------------------------------
+# prints tower 3
+#----------------------------------------------
+#prints the "|" if the number is 0 for tower 2
+#decides whether 0 or not
+tower_3_decide:
+beq $s2, 0, tower_3_num0
+j tower_3_numgreater0
+
+tower_3_num0:
+li $v0, 4 
+la $a0, blank
+syscall
+j tower_3_blank_spaces
+
+tower_3_numgreater0:
+add $a1,$s2,$0 # t0 is a constant 10
+li $a2, 0 # t1 is our counter (i)
+xxxloop:
+beq $a2, $a1, tower_3_blank_spaces # if t1 == 10 we are done
+
+li $v0, 4 
+la $a0, ex
+syscall
+
+addi $a2, $a2, 1 # add 1 to t1
+j xxxloop # jump back to the top
 
 
+# prints the blank space for tower 1
+tower_3_blank_spaces:
+#li $t1, 0
+beq $s2, $0,isZero3
+sub $a1,$t0,$s2
+j is_zero_3_done
+isZero3:
+subi $a1,$t0,1
+is_zero_3_done:
 
+li $a2, 0 # t1 is our counter (i)
+
+# loop inside of tower_1_num_0_blank_spaces
+tower_3_blank_spaces_loop:
+beq $a2, $a1, endlinea#tower_3_decide # if t1 == 10 we are done
+
+li $v0, 4 
+la $a0, blank_space
+syscall
+
+addi $a2, $a2, 1 # add 1 to t1
+j tower_3_blank_spaces_loop # jump back to the top
+#--------------------------------------------------
+#---------------------------------------------------
 
 endlinea:
 li $v0, 4 
@@ -172,32 +221,11 @@ la $a0, newLine
 syscall
 j increment
 
-
 increment:
 addi $t1, $t1, 1 # add 1 to t1
 j print_loop # jump back to the top
 
 end:
 
-
-#-------------------------------------
-# prints as numbers
-#-------------------------------------
-#li $v0, 1 
-#la $a0, ($s0)
-#syscall
-
-#li $v0, 1 
-#la $a0, ($s1)
-#syscall
-
-#li $v0, 1 
-#la $a0, ($s2)
-#syscall
-
-#li $v0, 4 
-#la $a0, newLine
-#syscall
-#--------------------------------------
 
 

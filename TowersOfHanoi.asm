@@ -27,14 +27,12 @@
 # }
 .data
 askForDiskCount: .asciiz "\nEnter the number of disks: "
-
-tower1: .space 12
-tower2: .space 12
-tower3: .space 12
 newLine: .asciiz "\n"
 blank: .asciiz "|"
 blank_space: .asciiz " "
 ex: .asciiz "x"
+numberOfSteps: .asciiz "\nTotal steps "
+steps: .asciiz " steps"
 
 .text
 
@@ -53,6 +51,8 @@ syscall
 add  $a0, $v0, $zero 	# load user identified disk count into n 
 addi $s3, $a0, 0	# set s3 to n
 addi $t9, $a0, 0
+
+addi $t7, $0, -1	# set step counter to -1 to account for the printing of the original state
 
 # load discs into initial position
 
@@ -262,7 +262,7 @@ la $s2, 0x10010188	# s2 = address of third column array, length = 10
 
 addi $t0, $t9, 0		# t0 is a constant n.
 li $t1, 0 		# t1 is our counter (i)
-addi $t7, $t1,1
+addi $t7, $t7, 1		# increment step counter
 
 print_loop:
 beq $t1, $t0, endPrint 	# if t1 == 10 we are done
@@ -462,3 +462,14 @@ endPrint:
 jr $ra
 
 exit:
+li  $v0, 4
+la  $a0, numberOfSteps	# prints total amount of steps
+syscall
+
+li  $v0, 1
+addi $a0, $t7, 0
+syscall
+
+li  $v0, 4
+la  $a0, steps	# prints total amount of steps
+syscall

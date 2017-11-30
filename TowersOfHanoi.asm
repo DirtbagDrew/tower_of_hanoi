@@ -110,7 +110,7 @@ sw $a0, 0($sp)		# save n
 
 slti $t0, $a0, 2 	# if n < 2, then t0 = 1
 
-beq $t0, $0, continue # branch of n >= 2
+beq $t0, $0, continue   # branch if n >= 2
 
 addi $sp, $sp, 20 	# pop 5 items from the stack
 
@@ -135,16 +135,15 @@ lw $a2, 8($sp)
 lw $a3, 12($sp)
 lw $ra, 16($sp)
 
-addi $a0, $a0, -1 	# n - 1
-addi $t0, $a1, 0	# create temp for from_rod
-addi $a1, $a3, 0	# set from_rod to value of aux+rod
-addi $a3, $t0, 0	# set aux_rod to value of from_rod
-
 addi $t3, $ra, 0	# store ra
 jal moveDisc		#moves disc in stack using current argument values	
 #print move
 addi $ra, $t3, 0	# reset ra
 
+addi $a0, $a0, -1 	# n - 1
+addi $t0, $a1, 0	# create temp for from_rod
+addi $a1, $a3, 0	# set from_rod to value of aux+rod
+addi $a3, $t0, 0	# set aux_rod to value of from_rod
 
 jal towerOfHanoi
 
@@ -211,12 +210,13 @@ findFromRodValue:
 		findValueLoop:
 		lw  $t0, 0($v0)		# load value of top index of from_rod
 		bne $t0, $0, valueFound	# if value at index of from_rod != 0, then the first disc is found
-		beq $t1, $s3, empty		# leaves loop if all indexes of rod are 0
+		#beq $t1, $s3, empty		# leaves loop if all indexes of rod are 0
 		addi $v0, $v0, 4	# increment address of from_rod if value not found yet
 		addi $t1, $t1, 1		# increment t1
 		j findValueLoop
 		
-		empty: 
+	#empty: 
+	
 		
 	valueFound:
 	addi $t1, $0, 0

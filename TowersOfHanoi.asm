@@ -68,10 +68,10 @@ addi $t0, $0, 1		# t0 = 1
 addi $t4, $0, 0		# t4 = 0
 
 addi $t1, $s0, 0	# save initial value of s0 which is address of A
-addi $t2, $s1, 0	# save initial value of s0 which is address of A
-addi $t3, $s2, 0	# save initial value of s0 which is address of A
+addi $t2, $s1, 0	# save initial value of s1 which is address of B
+addi $t3, $s2, 0	# save initial value of s2 which is address of C
 
-loop:
+loop:			# adds initial values to the corresponding arrays
 blt  $a0, $t0, endLoop	# end loop if a0 < t0
 sw $t0, 0($s0)		# save t0 into s0
 sw $t4, 0($s1)		# save 0 into s1
@@ -93,6 +93,9 @@ addi $s2, $t3, 0	#reset s0 to be the initial address of column 3
 addi $a1, $0, 1		# set from_rod
 addi $a2, $0, 3		# set to_rod
 addi $a3, $0, 2		# set aux_rod
+
+j print
+exitPrint:
 
 jal towerOfHanoi
 
@@ -246,8 +249,15 @@ beq  $t0, $a2, to_rodIs3	# branch if the to_rod = 3
 	addi $v1, $s2, 0	# set address of rod 3 to v1 and return
 	jr $ra
 
+#--------------------------------------------------------------print function------------------------------------------------------------
+
 print:
-li $t0, 25	# t0 is a constant n.
+
+la $s0, 0x100100c0 	# s0 = address of firt column array, length = 10
+la $s1, 0x10010124	# s1 = address of second column array, length = 10
+la $s2, 0x10010188	# s2 = address of third column array, length = 10
+
+li $t0, 3		# t0 is a constant n.
 li $t1, 0 		# t1 is our counter (i)
 addi $t7, $t1,1
 
@@ -446,6 +456,6 @@ j print_loop # jump back to the top
 # end of loop
 #-----------------------------------------------------
 endPrint:
-jr $ra
+j exitPrint
 
 exit:

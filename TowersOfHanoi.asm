@@ -33,9 +33,9 @@
 .data
 askForDiskCount: .asciiz "\nEnter the number of disks: "
 
-tower1: .space 100
-tower2: .space 100
-tower3: .space 100
+tower1: .space 12
+tower2: .space 12
+tower3: .space 12
 newLine: .asciiz "\n"
 blank: .asciiz "|"
 blank_space: .asciiz " "
@@ -44,8 +44,8 @@ ex: .asciiz "x"
 .text
 
 la $s0, 0x100100c0 	# s0 = address of firt column array, length = 10
-la $s1, 0x10010124	# s1 = address of second column array, length = 10
-la $s2, 0x10010188	# s2 = address of third column array, length = 10
+la $s1, 0x100100cc	# s1 = address of second column array, length = 10
+la $s2, 0x100100d8	# s2 = address of third column array, length = 10
 
 #la $s0, tower1		# allocate array tower1 to $s0
 #la $s1, tower2		# allocate array tower2 to $s6
@@ -94,8 +94,11 @@ addi $a1, $0, 1		# set from_rod
 addi $a2, $0, 3		# set to_rod
 addi $a3, $0, 2		# set aux_rod
 
-j print
-exitPrint:
+addi $s3, $a0, 0	# hold original value of a0
+addi $t6, $v0, 0	# hold original value of v0
+jal print
+addi $v0, $t6, 0	# restore value of v0
+addi $a0, $s3, 0	# restore value of a0
 
 jal towerOfHanoi
 
@@ -116,10 +119,16 @@ beq $t0, $0, continue   # branch if n >= 2
 
 addi $sp, $sp, 20 	# pop 5 items from the stack
 
-addi $t3, $ra, 0	# store ra
+addi $s4, $ra, 0	# store ra
 jal moveDisc		#moves disc in stack using current argument values	
-jal print		#print move
-addi $ra, $t3, 0	# reset ra
+
+addi $s3, $a0, 0	# hold original value of a0
+addi $t6, $v0, 0	# hold original value of v0
+jal print
+addi $v0, $t6, 0	# restore value of v0
+addi $a0, $s3, 0	# restore value of a0
+
+addi $ra, $s4, 0	# reset ra
 
 jr $ra			# return after printing
 
@@ -137,10 +146,16 @@ lw $a2, 8($sp)
 lw $a3, 12($sp)
 lw $ra, 16($sp)
 
-addi $t3, $ra, 0	# store ra
-jal moveDisc		#moves disc in stack using current argument values	
-jal print			#print move
-addi $ra, $t3, 0	# reset ra
+addi $s4, $ra, 0	# store ra
+jal moveDisc		#moves disc in stack using current argument values
+	
+addi $s3, $a0, 0	# hold original value of a0
+addi $t6, $v0, 0	# hold original value of v0
+jal print
+addi $v0, $t6, 0	# restore value of v0
+addi $a0, $s3, 0	# restore value of a0
+
+addi $ra, $s4, 0	# reset ra
 
 addi $a0, $a0, -1 	# n - 1
 addi $t0, $a1, 0	# create temp for from_rod
@@ -267,14 +282,14 @@ beq $t1, $t0, endPrint 	# if t1 == 10 we are done
 sll $t2, $t1, 2		# multply t1 by 4
 
 add $t3,$t2,$s0		# $t3 = $tower1[i]
-add $t4,$t2,$s1		# $t4 = $tower1[i]
-add $t5,$t2,$s2		# $t5 = $tower1[i]
+add $t4,$t2,$s1		# $t4 = $tower2[i]
+add $t5,$t2,$s2		# $t5 = $tower3[i]
 
 lw $s5, 0($t3)		# tower1[i] = i
 lw $s6, 0($t4)		# tower2[i] = 0
 lw $s7, 0($t5)		# tower3[i] = 0
 
-beq $s5, 0, tower_1_num0
+beq $s5, $0, tower_1_num0
 j tower_1_numgreater0
 
 
@@ -456,6 +471,6 @@ j print_loop # jump back to the top
 # end of loop
 #-----------------------------------------------------
 endPrint:
-j exitPrint
+jr $ra
 
 exit:

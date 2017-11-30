@@ -25,11 +25,6 @@
 #     towerOfHanoi(n, 'A', 'C', 'B');  // A, B and C are names of rods
 #     return 0;
 # }
-
-# n = $t0
-# $s0 = from_rod
-# $s1 = to_rod
-# $s2 = aux_rod
 .data
 askForDiskCount: .asciiz "\nEnter the number of disks: "
 
@@ -46,10 +41,6 @@ ex: .asciiz "x"
 la $s0, 0x100100c0 	# s0 = address of firt column array, length = 10
 la $s1, 0x10010124	# s1 = address of second column array, length = 10
 la $s2, 0x10010188	# s2 = address of third column array, length = 10
-
-#la $s0, tower1		# allocate array tower1 to $s0
-#la $s1, tower2		# allocate array tower2 to $s6
-#la $s2, tower3		# allocate array tower3 to $s7
 
 main:
 li  $v0, 4
@@ -141,7 +132,7 @@ addi $a3, $t0, 0	# set aux_rod to value of to_rod
 
 jal towerOfHanoi
 
-lw $a0, 0($sp)
+lw $a0, 0($sp)		# load values from the stack
 lw $a1, 4($sp)
 lw $a2, 8($sp)
 lw $a3, 12($sp)
@@ -228,13 +219,9 @@ findFromRodValue:
 		findValueLoop:
 		lw  $t0, 0($v0)		# load value of top index of from_rod
 		bne $t0, $0, valueFound	# if value at index of from_rod != 0, then the first disc is found
-		#beq $t1, $s3, empty		# leaves loop if all indexes of rod are 0
 		addi $v0, $v0, 4	# increment address of from_rod if value not found yet
 		addi $t1, $t1, 1		# increment t1
-		j findValueLoop
-		
-	#empty: 
-	
+		j findValueLoop	
 		
 	valueFound:
 	addi $t1, $0, 0

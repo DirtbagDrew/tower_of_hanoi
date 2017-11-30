@@ -64,39 +64,39 @@ syscall
 j tower_1_blank_spaces
 
 tower_1_numgreater0:
-add $a1,$s5,$0 				# t0 is a constant 10
-li $a2, 0 				# t1 is our counter (i)
+add $t2,$s5,$0 				# t0 is a constant 10
+li $t3, 0 				# t1 is our counter (i)
 xloop:
-beq $a2, $a1, tower_1_blank_spaces	# if t1 == 10 we are done
+beq $t3, $t2, tower_1_blank_spaces	# if t1 == 10 we are done
 
 li $v0, 4 
 la $a0, ex
 syscall
 
-addi $a2, $a2, 1 			# add 1 to t1
+addi $t3, $t3, 1 			# add 1 to t1
 j xloop 				# jump back to the top
 
 
 # prints the blank space for tower 1
 tower_1_blank_spaces:
 beq $s5, $0,isZero1
-sub $a1,$t0,$s5
+sub $t2,$t0,$s5
 j is_zero_1_done
 isZero1:
-subi $a1,$t0,1
+subi $t2,$t0,1
 is_zero_1_done:
 
-li $a2, 0 				# t1 is our counter (i)
+li $t3, 0 				# t1 is our counter (i)
 
 # loop inside of tower_1_num_0_blank_spaces
 tower_1_blank_spaces_loop:
-beq $a2, $a1, tower_2_decide 		# if t1 == 10 we are done
+beq $t3, $t2, tower_2_decide 		# if t1 == 10 we are done
 
 li $v0, 4 
 la $a0, blank_space
 syscall
 
-addi $a2, $a2, 1 			# add 1 to t1
+addi $t3, $t3, 1 			# add 1 to t1
 j tower_1_blank_spaces_loop 		# jump back to the top
 #--------------------------------------------------
 
@@ -117,39 +117,39 @@ syscall
 j tower_2_blank_spaces
 
 tower_2_numgreater0:
-add $a1,$s6,$0 				# t0 is a constant 10
-li $a2, 0 				# t1 is our counter (i)
+add $t2,$s6,$0 				# t0 is a constant 10
+li $t3, 0 				# t1 is our counter (i)
 xxloop:
-beq $a2, $a1, tower_2_blank_spaces 	# if t1 == 10 we are done
+beq $t3, $t2, tower_2_blank_spaces 	# if t1 == 10 we are done
 
 li $v0, 4 
 la $a0, ex
 syscall
 
-addi $a2, $a2, 1 			# add 1 to t1
+addi $t3, $t3, 1 			# add 1 to t1
 j xxloop 				# jump back to the top
 
 
 # prints the blank space for tower 1
 tower_2_blank_spaces:
 beq $s6, $0,isZero2
-sub $a1,$t0,$s6
+sub $t2,$t0,$s6
 j is_zero_2_done
 isZero2:
-subi $a1,$t0,1
+subi $t2,$t0,1
 is_zero_2_done:
 
-li $a2, 0 				# t1 is our counter (i)
+li $t3, 0 				# t1 is our counter (i)
 
 # loop inside of tower_1_num_0_blank_spaces
 tower_2_blank_spaces_loop:
-beq $a2, $a1, tower_3_decide 		# if t1 == 10 we are done
+beq $t3, $t2, tower_3_decide 		# if t1 == 10 we are done
 
 li $v0, 4 
 la $a0, blank_space
 syscall
 
-addi $a2, $a2, 1 # add 1 to t1
+addi $t3, $t3, 1 # add 1 to t1
 j tower_2_blank_spaces_loop 		# jump back to the top
 #--------------------------------------------------
 
@@ -170,39 +170,39 @@ syscall
 j tower_3_blank_spaces
 
 tower_3_numgreater0:
-add $a1,$s7,$0 				# t0 is a constant 10
-li $a2, 0 				# t1 is our counter (i)
+add $t2,$s7,$0 				# t0 is a constant 10
+li $t3, 0 				# t1 is our counter (i)
 xxxloop:
-beq $a2, $a1, tower_3_blank_spaces	# if t1 == 10 we are done
+beq $t3, $t2, tower_3_blank_spaces	# if t1 == 10 we are done
 
 li $v0, 4 
 la $a0, ex
 syscall
 
-addi $a2, $a2, 1 			# add 1 to t1
+addi $t3, $t3, 1 			# add 1 to t1
 j xxxloop 				# jump back to the top
 
 
 # prints the blank space for tower 1
 tower_3_blank_spaces:
 beq $s7, $0,isZero3
-sub $a1,$t0,$s7
+sub $t2,$t0,$s7
 j is_zero_3_done
 isZero3:
-subi $a1,$t0,1
+subi $t2,$t0,1
 is_zero_3_done:
 
-li $a2, 0 				# t1 is our counter (i)
+li $t3, 0 				# t1 is our counter (i)
 
 # loop inside of tower_1_num_0_blank_spaces
 tower_3_blank_spaces_loop:
-beq $a2, $a1, endOfLine			# if t1 == 10 we are done
+beq $t3, $t2, endOfLine			# if t1 == 10 we are done
 
 li $v0, 4 
 la $a0, blank_space
 syscall
 
-addi $a2, $a2, 1 			# add 1 to t1
+addi $t3, $t3, 1 			# add 1 to t1
 j tower_3_blank_spaces_loop 		# jump back to the top
 #--------------------------------------------------
 

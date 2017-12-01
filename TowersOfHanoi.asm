@@ -36,9 +36,7 @@ steps: .asciiz " steps"
 
 .text
 
-la $s0, 0x100100c0 	# s0 = address of firt column array, length = 10
-la $s1, 0x10010124	# s1 = address of second column array, length = 10
-la $s2, 0x10010188	# s2 = address of third column array, length = 10
+la $s0, 0x100100c0 	# s0 = address of first column array
 
 main:
 li  $v0, 4
@@ -51,6 +49,11 @@ syscall
 add  $a0, $v0, $zero 	# load user identified disk count into n 
 addi $s3, $a0, 0	# set s3 to n
 addi $t9, $a0, 0
+
+sll  $t0, $a0, 2	# multiply n by 4
+
+add $s1, $s0, $t0	# allocate n bytes for column 1
+add $s2, $s1, $t0	# allocate n bytes for column 2
 
 addi $t7, $0, -1	# set step counter to -1 to account for the printing of the original state
 
@@ -256,13 +259,10 @@ beq  $t0, $a2, to_rodIs3	# branch if the to_rod = 3
 
 print:
 
-la $s0, 0x100100c0 		# s0 = address of firt column array, length = 10
-la $s1, 0x10010124		# s1 = address of second column array, length = 10
-la $s2, 0x10010188		# s2 = address of third column array, length = 10
+addi $t7, $t7, 1		# increment step counter
 
 addi $t0, $t9, 0		# t0 is a constant n.
 li $t1, 0 			# t1 is our counter (i)
-addi $t7, $t1,1			# t7 is set to i + 1
 
 # starts the loop to print the array
 print_loop:
@@ -455,3 +455,15 @@ syscall
 jr $ra
 
 exit:
+
+li  $v0, 4
+la  $a0, numberOfSteps	# prints total amount of steps
+syscall
+
+li  $v0, 1
+addi $a0, $t7, 0	# prints step counter
+syscall
+
+li  $v0, 4
+la  $a0, steps	# prints total amount of steps
+syscall
